@@ -1,0 +1,23 @@
+{
+  "name": "@name-name-name/shared",
+  "version": "1.0.0",
+  "description": "Shared types and utilities for Name! Name!! Name!!! game",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": ["game", "multiplayer", "types"],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "zod": "^3.25.23"
+  }
+}

@@ -7,9 +7,16 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+     "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "docker:dev": "docker-compose -f ../docker-compose.yml -f ../docker-compose.dev.yml up frontend --build",
+    "docker:prod": "docker-compose -f ../docker-compose.yml -f ../docker-compose.prod.yml up frontend --build -d"
   },
   "dependencies": {
+    "@name-name-name/shared": "file:../shared",
     "@hookform/resolvers": "^5.0.1",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.9.0",

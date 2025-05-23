@@ -1,24 +1,166 @@
 version: '3.8'
+
 services:
+  # Redis - Session store and cache
   redis:
     image: redis:7-alpine
+    container_name: name-game-redis
+    restart: unless-stopped
     ports:
-      - "6380:6380"
-    command: redis-server --appendonly yes
+      - "6379:6379"
     volumes:
       - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - name-game-network
 
+  # MongoDB - Persistent storage
   mongodb:
     image: mongo:7
+    container_name: name-game-mongodb
+    restart: unless-stopped
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: namenamename
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-password123}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-namegame}
     volumes:
       - mongodb_data:/data/db
+      - ./mongodb/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - name-game-network
 
+  # Backend - NestJS API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${NODE_ENV:-development}
+    container_name: name-game-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3001
+      - MONGODB_URI=mongodb://${MONGO_ROOT_USERNAME:-admin}:${MONGO_ROOT_PASSWORD:-password123}@mongodb:27017/${MONGO_DB_NAME:-namegame}?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - backend_logs:/app/logs
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - name-game-network
+
+  # Frontend - React App
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: ${NODE_ENV:-development}
+    container_name: name-game-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3001}
+      - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:3001}
+      - VITE_APP_NAME=${VITE_APP_NAME:-Name! Name!! Name!!!}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - name-game-network
+
+  # Nginx - Reverse proxy and static files (for production)
+  nginx:
+    image: nginx:alpine
+    container_name: name-game-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - frontend_build:/usr/share/nginx/html
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - name-game-network
+    profiles:
+      - production
+
+# Development override
+  # Hot reload and development tools
+  backend-dev:
+    extends:
+      service: backend
+    container_name: name-game-backend-dev
+    command: npm run start:dev
+    environment:
+      - NODE_ENV=development
+      - HOT_RELOAD=true
+    profiles:
+      - development
+
+  frontend-dev:
+    extends:
+      service: frontend
+    container_name: name-game-frontend-dev
+    command: npm run dev -- --host 0.0.0.0
+    environment:
+      - NODE_ENV=development
+      - VITE_HMR_HOST=localhost
+    profiles:
+      - development
+
+# Shared network
+networks:
+  name-game-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Persistent volumes
 volumes:
   redis_data:
+    driver: local
   mongodb_data:
+    driver: local
+  backend_logs:
+    driver: local
+  frontend_build:
+    driver: local
+
+---
