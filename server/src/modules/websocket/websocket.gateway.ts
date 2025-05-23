@@ -19,9 +19,9 @@ import {
   JoinRoomPayload,
   LeaveRoomPayload,
   ChatMessagePayload,
-  Player,
 } from '@name-name-name/shared';
 import { SocketWithData } from './interfaces/socket-with-data.interface';
+import { PlayerData } from '../room/interfaces/player.interface';
 
 
 @UseFilters(WebSocketExceptionFilter)
@@ -215,7 +215,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
       }
 
       // Get player data
-      const playerData = await this.redisService.getPlayerData<Player>(playerId);
+      const playerData = await this.redisService.getPlayerData<PlayerData>(playerId);
       if (!playerData) {
         return this.sendError(client, 'PLAYER_NOT_FOUND', 'Player not found');
       }
@@ -282,7 +282,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
   }
 
   async broadcastToPlayer(playerId: string, event: string, data: any): Promise<void> {
-    const playerData = await this.redisService.getPlayerData<Player>(playerId);
+    const playerData = await this.redisService.getPlayerData<PlayerData>(playerId);
     if (playerData?.socketId) {
       const client = this.connectedClients.get(playerData.socketId);
       if (client) {
@@ -363,7 +363,7 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
   }
 
   async disconnectPlayer(playerId: string, reason?: string): Promise<void> {
-    const playerData = await this.redisService.getPlayerData<Player>(playerId);
+    const playerData = await this.redisService.getPlayerData<PlayerData>(playerId);
     if (playerData?.socketId) {
       const client = this.connectedClients.get(playerData.socketId);
       if (client) {
