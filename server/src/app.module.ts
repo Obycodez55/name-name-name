@@ -22,7 +22,7 @@ import { WebsocketModule } from './modules/websocket/websocket.module';
     // MongoDB
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'),
+        uri: configService.get<string>('mongodb.uri'),
       }),
       inject: [ConfigService],
     }),
@@ -32,7 +32,7 @@ import { WebsocketModule } from './modules/websocket/websocket.module';
       isGlobal: true,
       useFactory: async (configService: ConfigService) => ({
         store: redisStore,
-        url: configService.get<string>('REDIS_URL'),
+        url: configService.get<string>('redis.url'),
         ttl: 300, // 5 minutes default TTL
       }),
       inject: [ConfigService],
