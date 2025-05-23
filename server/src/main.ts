@@ -23,9 +23,12 @@ async function bootstrap() {
     transform: true,
     forbidNonWhitelisted: true,
   }));
+
+  app.setGlobalPrefix('api/v1')
   
   // WebSocket adapter
   app.useWebSocketAdapter(new IoAdapter(app));
+  const port = configService.get('app.port', 3001);
   
   // Swagger Documentation Setup
     const config = new DocumentBuilder()
@@ -74,12 +77,11 @@ async function bootstrap() {
       customSiteTitle: 'Name! Name!! Name!!! API Documentation',
     });
 
-    console.log(`📚 Swagger documentation available at: ${configService.get('app.url', `http://localhost:${configService.get('app.port', 3000)}`)}/api/docs`);
+    console.log(`📚 Swagger documentation available at: ${configService.get('app.url', `http://localhost:${port}`)}/api/docs`);
   
   // Start server
-  const port = configService.get('PORT', 3001);
   await app.listen(port);
 
-  console.log(`🚀 Application is running on: ${configService.get('app.url', `http://localhost:${configService.get('app.port', 3000)}`)}`);
+  console.log(`🚀 Application is running on: ${configService.get('app.url', `http://localhost:${port}`)}`);
 }
 bootstrap();
