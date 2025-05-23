@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+    @apply antialiased;
+  }
+  
+  * {
+    @apply border-border;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .game-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+    @apply bg-primary-500 hover:bg-primary-600 text-white;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply active:scale-95;
+  }
+  
+  .game-button-secondary {
+    @apply game-button bg-slate-200 hover:bg-slate-300 text-slate-900;
+    @apply dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100;
+  }
+  
+  .game-input {
+    @apply w-full px-3 py-2 border border-slate-300 rounded-lg;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+    @apply dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100;
+    @apply placeholder:text-slate-400 dark:placeholder:text-slate-500;
+  }
+  
+  .game-card {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700;
+    @apply p-6 transition-all duration-200;
+  }
+  
+  .game-card-hover {
+    @apply game-card hover:shadow-md hover:scale-[1.02] cursor-pointer;
+  }
+  
+  .letter-display {
+    @apply text-6xl font-bold text-game-letter;
+    @apply bg-gradient-to-br from-indigo-500 to-purple-600;
+    @apply bg-clip-text text-transparent;
+    @apply drop-shadow-lg;
+  }
+  
+  .score-display {
+    @apply text-2xl font-bold;
+    @apply bg-gradient-to-r from-green-500 to-emerald-600;
+    @apply bg-clip-text text-transparent;
+  }
+  
+  .timer-display {
+    @apply text-xl font-mono font-bold;
+    @apply text-game-timer;
+  }
+  
+  .timer-warning {
+    @apply timer-display text-red-500 animate-timer-pulse;
+  }
+  
+  .connection-indicator {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .connection-connected {
+    @apply connection-indicator bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+  
+  .connection-disconnected {
+    @apply connection-indicator bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+  
+  .connection-connecting {
+    @apply connection-indicator bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+  }
+}
+
+/* Custom utility styles */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+}
+
+/* Game-specific animations */
+.letter-entrance {
+  animation: letterReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.score-update {
+  animation: scorePop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.player-join {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.round-complete {
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Dark mode specific styles */
+@media (prefers-color-scheme: dark) {
+  .game-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Responsive design helpers */
+@media (max-width: 640px) {
+  .letter-display {
+    @apply text-4xl;
+  }
+  
+  .game-card {
+    @apply p-4;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
