@@ -1,0 +1,81 @@
+/* ===== CSS ANIMATIONS ===== */
+/* Keep only essential animations in CSS. Use Framer Motion for complex animations. */
+
+/* Loading spinner - better in CSS for performance */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse effect for connection status */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Bounce for loading dots */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Ping effect for notifications */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ===== UTILITY ANIMATION CLASSES ===== */
+
+/* Faster animations for immediate feedback */
+.animate-fast {
+  animation-duration: 150ms;
+}
+
+.animate-slow {
+  animation-duration: 1s;
+}
+
+/* Pause animations when reduced motion is preferred */
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-ping {
+    animation: none;
+  }
+  
+  /* Show static states instead */
+  .animate-pulse {
+    opacity: 0.5;
+  }
+}

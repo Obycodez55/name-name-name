@@ -1,0 +1,291 @@
+/* ===== GAME THEME CONFIGURATION ===== */
+@theme {
+  /* Core Brand Colors */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  
+  --color-secondary-50: #f0fdf4;
+  --color-secondary-100: #dcfce7;
+  --color-secondary-500: #22c55e;
+  --color-secondary-600: #16a34a;
+  --color-secondary-700: #15803d;
+  
+  /* Game State Colors */
+  --color-game-waiting: #8b5cf6;
+  --color-game-playing: #3b82f6;
+  --color-game-scoring: #10b981;
+  --color-game-ended: #6b7280;
+  
+  /* Answer Status Colors */
+  --color-answer-valid: #10b981;
+  --color-answer-invalid: #ef4444;
+  --color-answer-partial: #f59e0b;
+  --color-answer-pending: #6b7280;
+  --color-answer-unique: #8b5cf6;
+  
+  /* Player Status Colors */
+  --color-player-online: #10b981;
+  --color-player-offline: #6b7280;
+  --color-player-typing: #f59e0b;
+  --color-player-submitted: #3b82f6;
+  --color-player-master: #8b5cf6;
+  
+  /* Timer Colors */
+  --color-timer-normal: #6b7280;
+  --color-timer-warning: #f59e0b;
+  --color-timer-critical: #ef4444;
+  
+  /* Letter Display Colors */
+  --color-letter-primary: #6366f1;
+  --color-letter-secondary: #8b5cf6;
+  
+  /* Background Variations */
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-tertiary: #f1f5f9;
+  
+  /* Dark Mode Variations */
+  --color-surface-primary-dark: #1e293b;
+  --color-surface-secondary-dark: #0f172a;
+  --color-surface-tertiary-dark: #020617;
+  
+  /* Typography Scale */
+  --font-family-primary: 'Inter', system-ui, sans-serif;
+  --font-family-mono: ui-monospace, 'SF Mono', monospace;
+  
+  /* Spacing Scale Extensions */
+  --spacing-xs: 0.125rem;  /* 2px */
+  --spacing-2xs: 0.25rem;  /* 4px */
+  
+  /* Border Radius Scale */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  
+  /* Shadow Scale */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+  
+  /* Transition Durations (for CSS transitions, not Framer Motion) */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  
+  /* Game-Specific Measurements */
+  --game-sidebar-width: 20rem;     /* 320px */
+  --game-header-height: 4rem;      /* 64px */
+  --game-footer-height: 3rem;      /* 48px */
+  --game-card-min-height: 8rem;    /* 128px */
+  
+  /* Mobile Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* ===== THEME VARIANTS ===== */
+
+/* Dark Theme */
+.dark {
+  --color-surface-primary: var(--color-surface-primary-dark);
+  --color-surface-secondary: var(--color-surface-secondary-dark);
+  --color-surface-tertiary: var(--color-surface-tertiary-dark);
+  
+  /* Adjust shadows for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -1px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -2px rgb(0 0 0 / 0.3);
+}
+
+/* High Contrast Theme */
+[data-theme="high-contrast"] {
+  --color-primary-500: #000000;
+  --color-secondary-500: #ffffff;
+  --color-answer-valid: #008000;
+  --color-answer-invalid: #ff0000;
+  --color-answer-pending: #0000ff;
+  --color-timer-critical: #ff0000;
+  --color-timer-warning: #ff8800;
+}
+
+/* Colorblind-Friendly Theme */
+[data-theme="colorblind"] {
+  --color-answer-valid: #0173b2;      /* Blue */
+  --color-answer-invalid: #de8f05;    /* Orange */
+  --color-answer-partial: #cc78bc;    /* Pink */
+  --color-answer-unique: #029e73;     /* Green */
+  --color-player-online: #0173b2;
+  --color-player-typing: #de8f05;
+  --color-timer-warning: #de8f05;
+  --color-timer-critical: #ca472f;
+}
+
+/* ===== GAME STATE CLASSES ===== */
+
+/* Apply game state colors as CSS custom properties for easy JS access */
+.game-state-waiting {
+  --current-game-color: var(--color-game-waiting);
+}
+
+.game-state-playing {
+  --current-game-color: var(--color-game-playing);
+}
+
+.game-state-scoring {
+  --current-game-color: var(--color-game-scoring);
+}
+
+.game-state-ended {
+  --current-game-color: var(--color-game-ended);
+}
+
+/* ===== ROUND MASTER INDICATOR ===== */
+.round-master-indicator {
+  position: relative;
+}
+
+.round-master-indicator::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--color-player-master), var(--color-primary-500));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+/* ===== CONNECTION STATUS PULSE ===== */
+.connection-pulse {
+  position: relative;
+}
+
+.connection-pulse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+  transform: translate(-50%, -50%);
+  animation: connectionPulse 2s infinite;
+  opacity: 0.6;
+}
+
+@keyframes connectionPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ===== TYPING INDICATOR ===== */
+.typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.typing-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-player-typing);
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.typing-dot:nth-child(3) { animation-delay: 0s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== GAME CATEGORY COLORS ===== */
+.category-animals { --category-color: #ef4444; }
+.category-foods { --category-color: #f97316; }
+.category-places { --category-color: #eab308; }
+.category-movies { --category-color: #22c55e; }
+.category-books { --category-color: #06b6d4; }
+.category-sports { --category-color: #3b82f6; }
+.category-colors { --category-color: #8b5cf6; }
+.category-brands { --category-color: #ec4899; }
+.category-people { --category-color: #f59e0b; }
+.category-objects { --category-color: #10b981; }
+
+/* Apply category colors to category headers */
+[class*="category-"] .category-header {
+  border-left: 4px solid var(--category-color);
+  padding-left: 1rem;
+}
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+@media (max-width: 640px) {
+  :root {
+    --game-sidebar-width: 100%;
+    --game-header-height: 3.5rem;
+    --game-card-min-height: 6rem;
+  }
+}
+
+/* ===== REDUCED MOTION PREFERENCES ===== */
+@media (prefers-reduced-motion: reduce) {
+  .connection-pulse::after,
+  .typing-dot {
+    animation: none;
+  }
+  
+  .round-master-indicator::before {
+    opacity: 1;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  :root {
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+  
+  .connection-pulse::after,
+  .typing-indicator {
+    display: none;
+  }
+}

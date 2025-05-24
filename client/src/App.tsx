@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from '@context/GameContext';
-import { WebSocketProvider } from '@context/WebSocketContext';
-import { ThemeProvider } from '@context/ThemeContext';
-import { SoundProvider } from '@context/SoundContext';
-import Layout from '@components/layout/Layout';
+// import { WebSocketProvider } from '@context/WebSocketContext';
+// import { ThemeProvider } from '@context/ThemeContext';
+// import { SoundProvider } from '@context/SoundContext';
+// import Layout from '@components/layout/Layout';
 import Home from '@pages/Home';
 import Lobby from '@pages/Lobby';
 import Game from '@pages/Game';
@@ -14,12 +14,12 @@ import '@styles/globals.css';
 
 function App() {
   return (
-    <ThemeProvider>
-      <SoundProvider>
-        <WebSocketProvider>
-          <GameProvider>
+    // <ThemeProvider>
+    //   <SoundProvider>
+    //     <WebSocketProvider>
+    //       <GameProvider>
             <Router>
-              <Layout>
+              {/* <Layout> */}
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/lobby/:roomCode" element={<Lobby />} />
@@ -28,12 +28,12 @@ function App() {
                   <Route path="/error" element={<Error />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </Layout>
+              {/* </Layout> */}
             </Router>
-          </GameProvider>
-        </WebSocketProvider>
-      </SoundProvider>
-    </ThemeProvider>
+    //       </GameProvider>
+    //     </WebSocketProvider>
+    //   </SoundProvider>
+    // </ThemeProvider>
   );
 }
 
