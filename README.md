@@ -2,6 +2,20 @@
 
 This guide provides everything you need to run the multiplayer word game using Docker containers.
 
+## 🎮 Game Overview
+
+**Name! Name!! Name!!!** is a digital adaptation of the classic word association game. Players take turns being the "round master" who either selects a letter or triggers a timed round with a randomly selected letter. The goal is to fill categories like "Animals," "Foods," and "Cities" with valid words that start with the given letter.
+
+### Key Features
+
+- **Real-time Multiplayer**: Up to 8 players can join a room and play together
+- **Multiple Validation Methods**: Dictionary-based, AI-powered, or player voting validation
+- **Flexible Game Modes**: Random letters vs. player-selected letters
+- **Smart Scoring**: Points for valid answers, bonus points for unique answers
+- **Custom Categories**: Create games with custom category sets
+- **WebSocket Communication**: Instant synchronization across all players
+- **Responsive Design**: Works on desktop and mobile devices
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -151,21 +165,8 @@ docker-compose down -v
 ./scripts/cleanup.sh
 
 # View resource usage
-docker stats
-
-# Backup data
-docker-compose exec mongodb mongodump --out /tmp/backup
-docker cp name-game-mongodb:/tmp/backup ./mongodb-backup
+docker
 ```
-
-## 🔄 Development Workflow
-
-### Hot Reload Setup
-
-Both frontend and backend support hot reload in development:
-
-- **Frontend**: Vite dev server with HMR
-- **Backend**: NestJS watch mode with nodemon
 
 Files are mounted as volumes, so changes reflect immediately.
 

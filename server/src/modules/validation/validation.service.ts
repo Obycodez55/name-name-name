@@ -7,6 +7,7 @@ import {
   ValidationResult,
   ValidationMode,
   VALIDATION_CONSTANTS,
+  GAME_CONSTANTS,
 } from '@name-name-name/shared';
 import { ValidationStrategy } from './interfaces/validation-strategy.interface';
 import { DictionaryValidationStrategy } from './strategies/dictionary-validation.strategy';
@@ -49,10 +50,10 @@ export class ValidationService {
         ...request,
       };
 
-      this.logger.log(`Validating answer: ${request.answer} (${request.category}, ${request.letter})`);
+      this.logger.log(`Validating answer: ${request.answer} (${request.category}, ${request.context.letter})`);
 
       // Basic format validation
-      const formatValidation = this.validateAnswerFormat(request.answer, request.letter);
+      const formatValidation = this.validateAnswerFormat(request.answer, request.context.letter);
       if (!formatValidation.isValid) {
         return this.createValidationResult(
           validationRequest,
@@ -205,7 +206,7 @@ export class ValidationService {
 
   private getCacheKey(request: Omit<ValidationRequest, 'id'>): string {
     const normalized = request.answer.trim().toLowerCase();
-    return `validation:${request.strategy}:${request.category.toLowerCase()}:${request.letter.toLowerCase()}:${normalized}`;
+    return `validation:${request.strategy}:${request.category.toLowerCase()}:${request.context.letter.toLowerCase()}:${normalized}`;
   }
 
   private async cacheValidationResult(request: ValidationRequest, result: ValidationResult): Promise<void> {

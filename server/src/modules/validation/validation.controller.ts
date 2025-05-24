@@ -17,7 +17,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { ValidationService } from './validation.service';
-import { ApiResponse as CustomApiResponse } from '@name-name-name/shared';
+import { ApiResponse as CustomApiResponse, ValidationRequest } from '@name-name-name/shared';
 import { ValidateAnswerDto } from './dto/validate-answer.dto';
 import { ValidationResultDto } from './dto/validation-result.dto';
 
@@ -48,7 +48,6 @@ export class ValidationController {
         answer: validateAnswerDto.answer,
         category: validateAnswerDto.category,
         strategy: validateAnswerDto.validationMode,
-        playerId: validateAnswerDto.playerId || 'standalone-validation',
         context: {
           roundNumber: 1, // Default for standalone validation
           gameConfig: validateAnswerDto.config,
@@ -81,7 +80,7 @@ export class ValidationController {
     try {
       this.logger.log(`Validating ${requests.length} answers`);
       
-      const validationRequests = requests.map(req => ({
+      const validationRequests: ValidationRequest[] = requests.map(req => ({
         answer: req.answer,
         category: req.category,
         letter: req.letter,
@@ -89,7 +88,7 @@ export class ValidationController {
         context: {
           letter: req.letter,
           roundNumber: 1,
-          gameConfig: req.config || {},
+          gameConfig: req.config,
         },
       }));
 
