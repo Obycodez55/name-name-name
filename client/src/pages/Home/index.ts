@@ -1,3 +1,3 @@
-import { Home } from "./Home";
-
-export default Home;
+export { default } from './Home';
+export { default as CreateGameForm } from './CreateGameForm';
+export { default as JoinGameForm } from './JoinGameForm';

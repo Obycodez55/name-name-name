@@ -1,3 +1,2 @@
-import { Error } from "./Error";
-
-export default Error;
+export { default } from './Error';
+export { default as NotFound } from './NotFound';
