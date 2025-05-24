@@ -47,7 +47,7 @@ export class RoomService {
         roundTimeLimit: config.roundTimeLimit || GAME_CONSTANTS.DEFAULT_ROUND_TIME,
         validationMode: config.validationMode || 'dictionary' as ValidationMode,
         letterSelectionMode: config.letterSelectionMode || 'random' as LetterSelectionMode,
-        categories: config.categories || GAME_CONSTANTS.DEFAULT_CATEGORIES as Readonly<string[]>,
+        categories: config.categories || [...GAME_CONSTANTS.DEFAULT_CATEGORIES],
         maxRounds: config.maxRounds || 5,
         enableChat: config.enableChat !== false, // default truex`
         allowSpectators: config.allowSpectators || false,

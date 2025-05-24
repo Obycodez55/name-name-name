@@ -52,7 +52,7 @@ export class GameHistory {
 export const GameHistorySchema = SchemaFactory.createForClass(GameHistory);
 
 // Create indexes for common queries
-GameHistorySchema.index({ roomCode: 1 });
+// GameHistorySchema.index({ roomCode: 1 });
 GameHistorySchema.index({ 'players.id': 1 });
 GameHistorySchema.index({ completedAt: -1 });
 GameHistorySchema.index({ creatorId: 1 });

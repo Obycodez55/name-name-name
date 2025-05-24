@@ -10,19 +10,22 @@ import { ValidationModule } from './modules/validation/validation.module';
 import { ScoringModule } from './modules/scoring/scoring.module';
 import { PersistenceModule } from './modules/persistence/persistence.module';
 import { WebsocketModule } from './modules/websocket/websocket.module';
+import config from './config'
 
 @Module({
   imports: [
     // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.local', '.env'],
+      envFilePath: ['.env', '.env.local'],
+      load: [config],
+      cache: true,
     }),
     
     // MongoDB
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('mongodb.uri'),
+        uri: configService.get<string>('database.uri'),
       }),
       inject: [ConfigService],
     }),

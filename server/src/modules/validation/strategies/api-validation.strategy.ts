@@ -98,7 +98,7 @@ export class ApiValidationStrategy implements ValidationStrategy {
 
   private async validateWithWordnik(word: string): Promise<any> {
     try {
-      const apiKey = this.configService.get('WORDNIK_API_KEY');
+      const apiKey = this.configService.get('validation.wordnikApiKey');
       if (!apiKey) return { isValid: false, confidence: 0 };
 
       const url = `https://api.wordnik.com/v4/word.json/${word}/definitions`;

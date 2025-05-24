@@ -22,6 +22,8 @@ import { SelectLetterDto } from './dto/select-letter.dto';
 import { RoundData } from './interfaces/round.interface';
 import { SubmitAnswersDto } from './dto/submit-answers.dto';
 import { AnswerSubmissionResult } from './interfaces/answer.interface';
+import { ValidationService } from '../validation/validation.service';
+import { ScoringService } from '../scoring/scoring.service';
 
 @Injectable()
 export class GameService {
@@ -342,11 +344,19 @@ export class GameService {
         const validation = await this.validationService.validateAnswer({
           answer: answerData.answer,
           category: answerData.category,
-          letter: gameState.currentRound.letter,
-          validationMode: gameState.config.validationMode,
+          strategy: gameState.config.validationMode,
+          context: {
+            letter: gameState.currentRound.letter,
+            roundNumber: gameState.currentRound.roundNumber,
+            gameConfig: gameState.config,
+          }
         });
 
-        validationResults[answerData.playerId][answerData.category] = validation;
+        // Ensure validation result includes the validationMethod property
+        validationResults[answerData.playerId][answerData.category] = {
+          ...validation,
+          validationMethod: gameState.config.validationMode
+        };
       }
 
       // Store validation results

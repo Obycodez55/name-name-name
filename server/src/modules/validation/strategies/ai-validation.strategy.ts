@@ -72,12 +72,12 @@ export class AiValidationStrategy implements ValidationStrategy {
   }
 
   isConfigurationValid(config: any): boolean {
-    return !!(this.configService.get('OPENAI_API_KEY') || this.configService.get('ANTHROPIC_API_KEY'));
+    return !!(this.configService.get('validation.openaiApiKey') || this.configService.get('validation.anthropicApiKey'));
   }
 
   private async validateWithOpenAI(request: ValidationRequest): Promise<any> {
     try {
-      const apiKey = this.configService.get('OPENAI_API_KEY');
+      const apiKey = this.configService.get('validation.openaiApiKey');
       if (!apiKey) return null;
 
       const systemPrompt = this.buildSystemPrompt();
@@ -87,7 +87,7 @@ export class AiValidationStrategy implements ValidationStrategy {
         this.httpService.post(
           'https://api.openai.com/v1/chat/completions',
           {
-            model: this.configService.get('OPENAI_MODEL', 'gpt-3.5-turbo'),
+            model: this.configService.get('validation.openaiModel', 'gpt-3.5-turbo'),
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: userPrompt },
@@ -118,7 +118,7 @@ export class AiValidationStrategy implements ValidationStrategy {
 
   private async validateWithAnthropic(request: ValidationRequest): Promise<any> {
     try {
-      const apiKey = this.configService.get('ANTHROPIC_API_KEY');
+      const apiKey = this.configService.get('validation.anthropicApiKey');
       if (!apiKey) return null;
 
       const prompt = this.buildAnthropicPrompt(request);
@@ -127,7 +127,7 @@ export class AiValidationStrategy implements ValidationStrategy {
         this.httpService.post(
           'https://api.anthropic.com/v1/messages',
           {
-            model: this.configService.get('ANTHROPIC_MODEL', 'claude-3-haiku-20240307'),
+            model: this.configService.get('validation.anthropicModel', 'claude-3-haiku-20240307'),
             max_tokens: 150,
             messages: [{ role: 'user', content: prompt }],
           },

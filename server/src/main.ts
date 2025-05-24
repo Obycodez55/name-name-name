@@ -13,7 +13,7 @@ async function bootstrap() {
   
   // Enable CORS
   app.enableCors({
-    origin: configService.get('CORS_ORIGIN', 'http://localhost:3000'),
+    origin: configService.get('app.corsOrigin', 'http://localhost:3000'),
     credentials: true,
   });
   
@@ -40,7 +40,7 @@ async function bootstrap() {
       .addTag('validation', 'Answer validation endpoints')
       .addTag('scoring', 'Scoring system endpoints')
       .addTag('websocket', 'Real-time communication events')
-      .addServer(`http://localhost:${configService.get('PORT', 3001)}`, 'Development server')
+      .addServer(`http://localhost:${port}`, 'Development server')
       .addBearerAuth(
         {
           type: 'http',
